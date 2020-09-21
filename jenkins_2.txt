@@ -19,8 +19,24 @@ ssh-keygen
 ssh-copy-id jenkins@localhost
 ssh localhost
 
+visudo 
 
-visudo
+
+This isn't strictly necessary if you don't want to have THE JENKINS USER be a NO PASSWORD USER because you can pass it in at the command line if you want
+Best practices would indicate you have THE JENKINS USER as PRIVILEGED USER but it still requires a password
+ 
+### add script below root ALL=(ALL)	ALL   ###
+
+jenkins ALL=(ALL)	NOPASSWD: ALL
+
+---
+At slave node add jenkins user and config the visudo like above
+---
+
+ssh-copy-id jenkins@slave.node
+ssh jenkins@slave.node
+
+
 
 
 
