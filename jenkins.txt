@@ -1,0 +1,133 @@
+yum install wget
+
+sudo wget -O /etc/yum.repos.d/jenkins.repo http://pkg.jenkins-ci.org/redhat/jenkins.repo
+
+>> sudo rpm --import https://jenkins-ci.org/redhat/jenkins-ci.org.key
+IF Error link below:
+sudo rpm --import https://pkg.jenkins.io/redhat/jenkins.io.key
+
+yum update
+
+yum install jenkins
+
+yum install java-1.8.0-openjdk
+
+systemctl status firewalld
+systemctl status iptables
+
+systemctl enable jenkins
+systemctl start jenkins
+systemctl status jenkins
+
+
+yum install telnet
+ps aux | grep jenkins
+telnet localhost 8080
+
+yum install epel-release
+yum install nginx
+
+
+cd /etc/nginx
+vim nginx.conf
+
+#add this configuration
+----------
+location / {
+	proxy_pass http://127.0.0.1:8080;
+}
+---------
+
+systemctl enable nginx
+systemctl start nginx
+systemctl status nginx
+
+yum install elinks
+elinks http://localhost:8080
+
+getenforce
+setenforce 0
+getenforce
+systemctl restart nginx jenkins
+
+
+yum install -y setroubleshoot-server selinux-policy
+yum install policycoreutils-devel
+
+#check allowed port on tcp
+sepolicy network -t http_port_t
+
+#add port 8080 to allow
+semanage port -a -t http_port_t -p tcp 8080
+semanage port -m -t http_port_t -p tcp 8080
+sepolicy network -t http_port_t
+
+setenforce 1
+getenforce
+
+firewall-cmd --zone=public --permanent --add-service=http
+
+systemctl restart nginx jenkins
+
+######### open browser ############
+#### input from initialAdminPassword ####
+
+cd /var/lib/jenkins/secrets
+cat initialAdminPassword
+
+#### copy password to browser ####
+install suggested plugins
+#########################################
+setup reverse proxy error 
+running jenkins behind nginx
+
+add more script above server
+map $http_upgrade $connection_upgrade {
+    default upgrade;
+    ''      close;
+
+add more script below proxy_pass
+
+vim /etc/nginx/nginx.conf
+
+
+location / {
+      sendfile off;
+      proxy_pass         http://jenkins;
+      proxy_redirect     default;
+      proxy_http_version 1.1;
+
+      # Required for Jenkins websocket agents
+      proxy_set_header   Connection        $connection_upgrade;
+      proxy_set_header   Upgrade           $http_upgrade;
+
+      proxy_set_header   Host              $host;
+      proxy_set_header   X-Real-IP         $remote_addr;
+      proxy_set_header   X-Forwarded-For   $proxy_add_x_forwarded_for;
+      proxy_set_header   X-Forwarded-Proto $scheme;
+      proxy_max_temp_file_size 0;
+
+      #this is the maximum upload size
+      client_max_body_size       10m;
+      client_body_buffer_size    128k;
+
+      proxy_connect_timeout      90;
+      proxy_send_timeout         90;
+      proxy_read_timeout         90;
+      proxy_buffering            off;
+      proxy_request_buffering    off; # Required for HTTP CLI commands
+      proxy_set_header Connection ""; # Clear for keepalive
+#########################################
+
+
+
+
+
+
+
+
+
+
+
+
+

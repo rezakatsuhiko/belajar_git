@@ -1,0 +1,14 @@
+By default all of the processes that Jenkins will run will by default with THE JENKINS USER ID
+
+The problem with THE JENKINS USER ID as it's initially set up is that it's too restricted for us in order to do most things
+
+cat /etc/passwd | grep jenkins
+vim /etc/passwd
+
+###
+
+change /bin/false to /bin/bash
+
+###
+
+
