@@ -5,10 +5,22 @@ The problem with THE JENKINS USER ID as it's initially set up is that it's too r
 cat /etc/passwd | grep jenkins
 vim /etc/passwd
 
-###
-
-change /bin/false to /bin/bash
+### change /bin/false to /bin/bash ###
 
 ###
+generate ssh key if you need to log into particularly slave nodes or build server you need to have a user ID that you can use for that purpose
+###
+
+passwd jenkins
+su - jenkins
+pwd
+
+ssh-keygen
+ssh-copy-id jenkins@localhost
+ssh localhost
+
+
+visudo
+
 
 
