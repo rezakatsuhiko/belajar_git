@@ -1,4 +1,62 @@
 sign in jenkins on web browser
 
 > New Item
+> FOLDER
+  create a container that stores nested items
+> Freestyle Project
+  allow us to do basically anything that we want
+> Build >> Add build step >> Execute shell
+  == cat /var/log/messages
+> Save
+
+
+### THE OUTPUT IS FAIL! WHY? ###
+
+Check the problem...
+----------------------------
+> Build History
+> Click Red Notification
+> Click Red Notification below Build History
+> Console Output
+///
+Started by user Reza Katsuhiko
+Running as SYSTEM
+Building in workspace /var/lib/jenkins/workspace/MyBuild/First Build
+[First Build] $ /bin/sh -xe /tmp/jenkins3341218015482978867.sh
++ cat /var/log/messages
+cat: /var/log/messages: Permission denied
+Build step 'Execute shell' marked build as failure
+Finished: FAILURE
+///
+
+= Back to project
+= Configure
+= Edit Build on Execute Shell
+in this case add script "sudo"
+= sudo cat /var/log/messages
+= save
+= > Build Now
+
+### THE OUTPUT IS STILL FAIL! WHY? ###
+> Build History
+> Click Red Notification
+> Click Red Notification below Build History
+> Console Output
+///
+Started by user Reza Katsuhiko
+Running as SYSTEM
+Building in workspace /var/lib/jenkins/workspace/MyBuild/First Build
+[First Build] $ /bin/sh -xe /tmp/jenkins3341218015482978867.sh
++ sudo cat /var/log/messages
+sudo: sorry, you must have a tty to run sudo
+Build step 'Execute shell' marked build as failure
+Finished: FAILURE
+///
+
+what does that mean?
+because we're running the command in the background there's no terminal for it to display its output to
+so in order to display the output so that we can capture it as plain text and allow the shell script because what jenkins is effectively doing is it's taking our console or it's taking our build itself
+
+
+
 
