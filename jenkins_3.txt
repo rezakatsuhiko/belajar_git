@@ -54,8 +54,32 @@ Finished: FAILURE
 ///
 
 what does that mean?
-because we're running the command in the background there's no terminal for it to display its output to
-so in order to display the output so that we can capture it as plain text and allow the shell script because what jenkins is effectively doing is it's taking our console or it's taking our build itself
+because we're running the command in the background there's no terminal for it to display its output too
+
+So in order to display the output so that we can capture it as plain text and allow the shell script because what jenkins is effectively doing is it's taking our console or it's taking our build itself
+
+It's Creating a temporary workspace in /var/lib/jenkins/workspace and it in the temporary directory it's executing a shell to shell out and run an actual shell script contains the commands within our shell build but it doesn't have any TTY in order to run it
+
+By default SSH comes configured with required TTY from SSH configuration file
+
+TTY associated with your log and that's how it grabs the console for being able to print output to the screen
+
+///
+
+
+visudo
+### edit script on visudo just add excalamation mark before requiretty ###
+FROM ----
+Default	requiretty
+TO ----
+Default	!requiretty
+####
+
+///
+It will not affect your system in any way shape or form. This is just a way of accommodating out ability to run scripts in the background in our jenkins builds. 
+
+
+///
 
 
 
