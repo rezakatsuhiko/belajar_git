@@ -1,0 +1,50 @@
+Plugin Management and Builds
+
+
+DASHBOARD JENKINS
+
+> Manage Jenkins
+> Manage Plugins
+> Available Tab
+> search "SSH Plugin" Download install and restart
+> Back to DASHBOARD - Manage Jenkins - Configure System OR Global Tool Configuration
+> SSH remote hosts > SSH Sites > Add
+  === 
+  Hostname localhost
+  Port 22
+  User Name jenkins
+  Password/Passphrase ******
+  
+  Hostname SLAVE
+  Port 22
+  User Name Jenkins
+  Keyfile /var/lib/jenkins/id_rsa
+  ===
+
+
+>> Dashboard > 1ST BUILD > NEW ITEM > FREESTYLE PROJECT "RemoteLogViewer"
+>> Description "Remotely view /var/log/messages"
+>> BUILD > ADD BUILD STEP > EXECUTE SHELL SCRIPT ON REMOTE HOST USING SSH
+   ===
+   SSH site [userjenkins] jenkins@[SLAVETARGET]:22
+   Command sudo cat /var/log/messages
+   
+>> SAVE
+
+--- IF FAIL, CHECK ERROR LOG [REQUIRETTY] >> THEN BUILD NOW! ---
+
+////////////////////////////////////////////////////////////////////////
+///// GITHUB
+////////////////////////////////////////////////////////////////////////
+
+>> Dashboard > 1ST BUILD > NEW ITEM > FREESTYLE PROJECT "MyGithubBuild"
+>> Checklist GitHub Project "
+   ===
+   Project URL https://github.com/rezakatsuhiko/jenkins_practice.git
+   Display Name "My Github build for Jenkins"
+
+   
+
+
+>> 
+
