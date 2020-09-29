@@ -34,17 +34,63 @@ DASHBOARD JENKINS
 --- IF FAIL, CHECK ERROR LOG [REQUIRETTY] >> THEN BUILD NOW! ---
 
 ////////////////////////////////////////////////////////////////////////
-///// GITHUB
+///// GITHUB 
 ////////////////////////////////////////////////////////////////////////
 
 >> Dashboard > 1ST BUILD > NEW ITEM > FREESTYLE PROJECT "MyGithubBuild"
->> Checklist GitHub Project "
+>> Checklist GitHub Project 
    ===
-   Project URL https://github.com/rezakatsuhiko/jenkins_practice.git
+   Project URL https://github.com/rezakatsuhiko/Jenkins.git
+   Click ADVANCED
    Display Name "My Github build for Jenkins"
 
-   
+>> Source Code Management
+>> Check Git
+   Repository URL https://github.com/rezakatsuhiko/Jenkins.git
+   [IF error like this]
+   Failed to connect to repository : Error performing git command: git ls-remote -h https://github.com/rezakatsuhiko/Jenkins.git HEAD
+   [Install git on Jenkins Server]
+   [yum install git]
+   Branch Specifier (blank for 'any')   */master
+>> SAVE
 
+===
+The git build has been created 
+BY DEFAULT :  
+THE GIT PLUGIN WILL BUILD IN THE WORKSPACE THAT'S CREATED FOR YOUR BUILD 
+So that path should be initialized and contained the cloned repository that we just checked,
+But that's not extremely useful in terms of the project
+if you don't want it built to that workspace unless you going to execute a post build step which you can do
+===
 
->> 
+>> MyGithubBuild > Configure
+>> Source Code Management > Additional Behaviours
+   Add > Check out to a sub-directory
+   Local subdirectory for repo	/var/www/html
+>> Save
+>> BUILD NOW
+
+===
+IF Error 
+java.nio.file.AccessDeniedException: /var/www/html
+
+Make that directory exist -----
+create folder in jenkins server
+mkdir -p /var/www/html
+====
+
+>> BUILD NOW
+
+===
+IF Error 
+ERROR: Error cloning remote repo 'origin'
+Caused by: hudson.plugins.git.GitException: Command "git init /var/www/html" returned status code 1:
+stdout: 
+stderr: /var/www/html/.git: Permission denied
+
+Make that access for jenkins user -----
+chown jenkins:jenkins /var/www/html
+====
+
+>> BUILD NOW
 
